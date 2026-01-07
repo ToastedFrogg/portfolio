@@ -387,17 +387,18 @@ section {
 
 .hero-content {
     display: flex;
-    gap: 3rem;
+    gap: 4rem;
     align-items: flex-start;
 }
 
 .hero-left {
     flex: 0 0 450px;
+    min-width: 450px;
 }
 
 .hero-right {
     flex: 1;
-    min-width: 0;
+    min-width: 600px;
 }
 
 .hero-right .section-title {
@@ -411,13 +412,13 @@ section {
 
 .about-content-wrapper {
     display: flex;
-    gap: 3rem;
+    gap: 2.5rem;
     align-items: flex-start;
 }
 
 .about-content-wrapper .about-text {
     flex: 1;
-    min-width: 0;
+    min-width: 300px;
 }
 
 .about-content-wrapper .about-text p {
@@ -460,8 +461,8 @@ section {
 }
 
 .about-content-wrapper .about-image {
-    flex: 0 0 350px;
-    max-width: 350px;
+    flex: 0 0 280px;
+    max-width: 280px;
 }
 
 /* Responsive: Stack on smaller screens */

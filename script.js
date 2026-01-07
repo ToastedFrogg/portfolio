@@ -36,50 +36,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const slides = Array.from(track.children);
     const nextButton = document.querySelector('.carousel-btn.next');
     const prevButton = document.querySelector('.carousel-btn.prev');
-    const slideWidth = slides[0].getBoundingClientRect().width;
 
-    // Arrange the slides next to one another
-    const setSlidePosition = (slide, index) => {
-        slide.style.left = slideWidth * index + 'px';
+    // Helper to move to a slide
+    const updateSlidePosition = (index) => {
+        const slideWidth = slides[0].getBoundingClientRect().width;
+        track.style.transform = `translateX(-${index * slideWidth}px)`;
+
+        // Update active class
+        const currentSlide = track.querySelector('.current-slide');
+        if (currentSlide) currentSlide.classList.remove('current-slide');
+        slides[index].classList.add('current-slide');
     };
-    slides.forEach(setSlidePosition);
 
-    const moveToSlide = (track, currentSlide, targetSlide) => {
-        track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
-        currentSlide.classList.remove('current-slide');
-        targetSlide.classList.add('current-slide');
+    // Find current index
+    const getCurrentIndex = () => {
+        const currentSlide = track.querySelector('.current-slide');
+        return slides.indexOf(currentSlide);
     };
 
     // Next Button Click
-    nextButton.addEventListener('click', e => {
-        const currentSlide = track.querySelector('.current-slide');
-        let nextSlide = currentSlide.nextElementSibling;
-
-        // Loop back to first slide if at the end
-        if (!nextSlide) {
-            nextSlide = slides[0];
-        }
-
-        moveToSlide(track, currentSlide, nextSlide);
+    nextButton.addEventListener('click', () => {
+        const index = getCurrentIndex();
+        const nextIndex = index === slides.length - 1 ? 0 : index + 1;
+        updateSlidePosition(nextIndex);
     });
 
     // Prev Button Click
-    prevButton.addEventListener('click', e => {
-        const currentSlide = track.querySelector('.current-slide');
-        let prevSlide = currentSlide.previousElementSibling;
-
-        // Loop to last slide if at the beginning
-        if (!prevSlide) {
-            prevSlide = slides[slides.length - 1];
-        }
-
-        moveToSlide(track, currentSlide, prevSlide);
+    prevButton.addEventListener('click', () => {
+        const index = getCurrentIndex();
+        const prevIndex = index === 0 ? slides.length - 1 : index - 1;
+        updateSlidePosition(prevIndex);
     });
 
     // Auto-Play
     let autoPlayInterval = setInterval(() => {
         nextButton.click();
-    }, 4000); // Change slide every 4 seconds
+    }, 4000);
 
     // Pause on hover
     const carouselContainer = document.querySelector('.carousel-container');
@@ -93,14 +85,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     });
 
-    // Handle Window Resize (Recalculate widths)
+    // Handle Resize
     window.addEventListener('resize', () => {
-        const newSlideWidth = slides[0].getBoundingClientRect().width;
-        slides.forEach((slide, index) => {
-            slide.style.left = newSlideWidth * index + 'px';
-        });
-        // Re-center current slide
-        const currentSlide = track.querySelector('.current-slide');
-        track.style.transform = 'translateX(-' + currentSlide.style.left + ')';
+        const index = getCurrentIndex();
+        // Recalculate position instantly
+        track.style.transition = 'none';
+        const slideWidth = slides[0].getBoundingClientRect().width;
+        track.style.transform = `translateX(-${index * slideWidth}px)`;
+        setTimeout(() => {
+            track.style.transition = 'transform 0.5s ease-in-out';
+        }, 50);
     });
 });

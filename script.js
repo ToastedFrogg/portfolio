@@ -31,44 +31,76 @@ document.addEventListener('DOMContentLoaded', () => {
     const fadeElements = document.querySelectorAll('.fade-in');
     fadeElements.forEach(el => observer.observe(el));
 
-    // Lightbox Functionality
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const closeBtn = document.querySelector('.lightbox-close');
+    // Carousel Functionality
+    const track = document.querySelector('.carousel-track');
+    const slides = Array.from(track.children);
+    const nextButton = document.querySelector('.carousel-btn.next');
+    const prevButton = document.querySelector('.carousel-btn.prev');
+    const slideWidth = slides[0].getBoundingClientRect().width;
 
-    // Open Lightbox
-    document.querySelectorAll('.gallery-item').forEach(item => {
-        item.addEventListener('click', () => {
-            const img = item.querySelector('img');
-            if (img) {
-                lightbox.classList.add('active');
-                lightboxImg.src = img.src;
-                document.body.style.overflow = 'hidden'; // Disable scrolling
-            }
-        });
-    });
+    // Arrange the slides next to one another
+    const setSlidePosition = (slide, index) => {
+        slide.style.left = slideWidth * index + 'px';
+    };
+    slides.forEach(setSlidePosition);
 
-    // Close Lightbox (function)
-    const closeLightbox = () => {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = ''; // Enable scrolling
-        setTimeout(() => {
-            lightboxImg.src = ''; // Clear source after transition
-        }, 300);
+    const moveToSlide = (track, currentSlide, targetSlide) => {
+        track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
+        currentSlide.classList.remove('current-slide');
+        targetSlide.classList.add('current-slide');
     };
 
-    // Close events
-    closeBtn.addEventListener('click', closeLightbox);
+    // Next Button Click
+    nextButton.addEventListener('click', e => {
+        const currentSlide = track.querySelector('.current-slide');
+        let nextSlide = currentSlide.nextElementSibling;
 
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-            closeLightbox();
+        // Loop back to first slide if at the end
+        if (!nextSlide) {
+            nextSlide = slides[0];
         }
+
+        moveToSlide(track, currentSlide, nextSlide);
     });
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-            closeLightbox();
+    // Prev Button Click
+    prevButton.addEventListener('click', e => {
+        const currentSlide = track.querySelector('.current-slide');
+        let prevSlide = currentSlide.previousElementSibling;
+
+        // Loop to last slide if at the beginning
+        if (!prevSlide) {
+            prevSlide = slides[slides.length - 1];
         }
+
+        moveToSlide(track, currentSlide, prevSlide);
+    });
+
+    // Auto-Play
+    let autoPlayInterval = setInterval(() => {
+        nextButton.click();
+    }, 4000); // Change slide every 4 seconds
+
+    // Pause on hover
+    const carouselContainer = document.querySelector('.carousel-container');
+    carouselContainer.addEventListener('mouseenter', () => {
+        clearInterval(autoPlayInterval);
+    });
+
+    carouselContainer.addEventListener('mouseleave', () => {
+        autoPlayInterval = setInterval(() => {
+            nextButton.click();
+        }, 4000);
+    });
+
+    // Handle Window Resize (Recalculate widths)
+    window.addEventListener('resize', () => {
+        const newSlideWidth = slides[0].getBoundingClientRect().width;
+        slides.forEach((slide, index) => {
+            slide.style.left = newSlideWidth * index + 'px';
+        });
+        // Re-center current slide
+        const currentSlide = track.querySelector('.current-slide');
+        track.style.transform = 'translateX(-' + currentSlide.style.left + ')';
     });
 });

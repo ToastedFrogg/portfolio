@@ -383,19 +383,20 @@ section {
 /* Carousel Styles */
 .carousel-section {
     padding-top: 2rem;
-    /* Reduced padding for top section */
 }
 
 .carousel-container {
     position: relative;
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 450px;
+    /* Reduced width for portrait look */
+    margin: 0;
+    /* Left align by removing auto margin */
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 10px 30px -10px var(--item-shadow);
-    aspect-ratio: 16/9;
-    /* Maintain aspect ratio */
+    aspect-ratio: 3/4;
+    /* Taller portrait aspect ratio */
 }
 
 .carousel-track-container {

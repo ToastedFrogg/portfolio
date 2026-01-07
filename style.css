@@ -402,15 +402,16 @@ section {
 
 .hero-right .section-title {
     margin-top: 0;
+    margin-bottom: 1.5rem;
 }
 
 .hero-right .about-text {
-    margin-bottom: 2rem;
+    margin-bottom: 0;
 }
 
 .about-content-wrapper {
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     align-items: flex-start;
 }
 
@@ -419,9 +420,48 @@ section {
     min-width: 0;
 }
 
+.about-content-wrapper .about-text p {
+    line-height: 1.7;
+    font-size: 1.05rem;
+    margin-bottom: 1.2rem;
+}
+
+.about-content-wrapper .about-text p:last-of-type {
+    margin-bottom: 0;
+}
+
+.contact-info {
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+}
+
+.instagram-links {
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.instagram-links a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.instagram-links a:hover {
+    opacity: 0.8;
+}
+
+.address {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+}
+
 .about-content-wrapper .about-image {
-    flex: 0 0 300px;
-    max-width: 300px;
+    flex: 0 0 350px;
+    max-width: 350px;
 }
 
 /* Responsive: Stack on smaller screens */

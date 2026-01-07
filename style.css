@@ -408,6 +408,22 @@ section {
     margin-bottom: 2rem;
 }
 
+.about-content-wrapper {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.about-content-wrapper .about-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.about-content-wrapper .about-image {
+    flex: 0 0 300px;
+    max-width: 300px;
+}
+
 /* Responsive: Stack on smaller screens */
 @media (max-width: 1024px) {
     .hero-content {
@@ -422,6 +438,14 @@ section {
 
     .hero-right {
         width: 100%;
+    }
+
+    .about-content-wrapper {
+        flex-direction: column;
+    }
+
+    .about-content-wrapper .about-image {
+        max-width: 100%;
     }
 }
 
